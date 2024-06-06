@@ -1,0 +1,11 @@
+env = "dev"
+region = "us-east-1"
+ami_id = "ami-0df02a5fdcc70ed62"
+app_server_instance_type = "t3.micro"
+key_pair_name = "talo-key-pair"
+prefix = "talo-tf"
+resource_alias = "talo"
+azs = ["us-east-1a", "us-east-1b"]
+vpc_cidr = "10.0.0.0/16"
+vpc_private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+vpc_public_subnets = ["10.0.10.0/24", "10.0.20.0/24"]
