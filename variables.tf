@@ -8,11 +8,6 @@ variable "region" {
     type        = string
 }
 
-variable "ami_id" {
-    description = "EC2 Image"
-    type        = string
-}
-
 variable "app_server_instance_type" {
     description = "Instance Type"
     type        = string

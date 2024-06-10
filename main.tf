@@ -1,11 +1,27 @@
+data "aws_availability_zones" "available_azs" {
+  state = "available"
+}
+
+data "aws_ami" "custom" {
+  most_recent = true
+
+  filter {
+    name   = "tag:Name"
+    values = ["talo-ami-latest"]
+  }
+
+  # Specify your AWS account ID or use "self" for the current account
+  owners = ["self"]
+}
+
 module "app_vpc" {
   source             = "terraform-aws-modules/vpc/aws"
-  version            = "3.14.0"
+  version            = "5.8.1"
 
   name               = "${var.prefix}-vpc-${var.env}"
   cidr               = var.vpc_cidr
 
-  azs                = var.azs
+  azs                = data.aws_availability_zones.available_azs.names
   private_subnets    = var.vpc_private_subnets
   public_subnets     = var.vpc_public_subnets
 
@@ -28,14 +44,15 @@ module "app_vpc" {
  For full description of this resource: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance
 */
 resource "aws_instance" "app_server" {
-  ami                    = var.ami_id
-  instance_type          = var.app_server_instance_type
-  availability_zone      = var.azs[0]
-  vpc_security_group_ids = [aws_security_group.app_server_sg.id]
-  key_name               = var.key_pair_name
-  subnet_id              = module.app_vpc.public_subnets[0]
-  iam_instance_profile   = aws_iam_instance_profile.app_server_profile.name
-  user_data              = "${file("./deploy.sh")}"
+  ami                         = data.aws_ami.custom.id
+  instance_type               = var.app_server_instance_type
+  availability_zone           = var.azs[0]
+  vpc_security_group_ids      = [aws_security_group.app_server_sg.id]
+  key_name                    = var.key_pair_name
+  subnet_id                   = module.app_vpc.public_subnets[0]
+  iam_instance_profile        = aws_iam_instance_profile.app_server_profile.name
+  user_data                   = "${file("./deploy.sh")}"
+  associate_public_ip_address = true
 
   depends_on = [
     aws_s3_bucket.data_bucket

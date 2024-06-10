@@ -1,6 +1,6 @@
 env = "dev"
 region = "us-east-1"
-ami_id = "ami-0df02a5fdcc70ed62"
+# ami_id = "ami-0df02a5fdcc70ed62"
 app_server_instance_type = "t3.micro"
 key_pair_name = "talo-key-pair"
 prefix = "talo-tf"

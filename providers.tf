@@ -22,7 +22,6 @@ terraform {
   required_version = ">= 1.2.0"
 }
 
-
 /*
  The provider block configures the specified provider, in this case aws.
  You can use multiple provider blocks in your Terraform configuration to manage resources from different providers.

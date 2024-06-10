@@ -1,9 +1,7 @@
-name: TF Infra Deployment
+name: TF Infra Cleanup
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   InfraProvision:
@@ -16,11 +14,11 @@ jobs:
         with:
           terraform_version: '1.8.4'
 
-      - name: Apply Configuration
+      - name: Destroy Configuration
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           terraform init
           terraform plan -var-file="prod.tfvars" -out terraform.plan
-          terraform apply -auto-approve terraform.plan
+          terraform destroy terraform.plan -auto-approve
