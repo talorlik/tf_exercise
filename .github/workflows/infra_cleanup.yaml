@@ -20,5 +20,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           terraform init
-          terraform plan -var-file="prod.tfvars" -out terraform.plan
-          terraform destroy terraform.plan -auto-approve
+          terraform plan -var-file="prod.tfvars" -destroy -out terraform.plan
+          terraform apply -auto-approve terraform.plan

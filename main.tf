@@ -7,7 +7,7 @@ data "aws_ami" "custom" {
 
   filter {
     name   = "tag:Name"
-    values = ["talo-ami-latest"]
+    values = ["talo-ami-2"]
   }
 
   # Specify your AWS account ID or use "self" for the current account
